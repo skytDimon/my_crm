@@ -1,0 +1,32 @@
+# Быстрые файлы Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Виртуальные окружения
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Настройки IDE / Редакторов
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Системные файлы
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+
+# Логи и временные файлы
+*.log
+tmp/
+temp/
+
+# Базы данных / Redis (если вдруг локально будут созданы директории вместо volume)
+postgres_data/
+redis_data/
