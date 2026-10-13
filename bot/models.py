@@ -12,7 +12,7 @@ class Client(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
 
-    projects: Mapped[list["Project"]] = relationship(back_populates="client")
+    projects: Mapped[list["Project"]] = relationship(back_populates="client", lazy="selectin", cascade="all, delete-orphan")
 
 class Project(Base):
     __tablename__ = "projects"
@@ -24,10 +24,10 @@ class Project(Base):
     paid_amount: Mapped[float] = mapped_column(Float, default=0.0)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
-    client: Mapped["Client"] = relationship(back_populates="projects")
-    tasks: Mapped[list["Task"]] = relationship(back_populates="project")
+    client: Mapped["Client"] = relationship(back_populates="projects", lazy="selectin")
+    tasks: Mapped[list["Task"]] = relationship(back_populates="project", lazy="selectin", cascade="all, delete-orphan")
 
-class TaskStatus(enum.Enum):
+class TaskStatus(str, enum.Enum):
     waiting = "waiting"
     in_progress = "in_progress"
     done = "done"
@@ -43,4 +43,4 @@ class Task(Base):
     hours_spent: Mapped[float | None] = mapped_column(Float, nullable=True)
     status: Mapped[TaskStatus] = mapped_column(Enum(TaskStatus), default=TaskStatus.waiting)
 
-    project: Mapped["Project"] = relationship(back_populates="tasks")
+    project: Mapped["Project"] = relationship(back_populates="tasks", lazy="selectin")

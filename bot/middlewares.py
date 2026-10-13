@@ -1,6 +1,6 @@
 from typing import Any, Awaitable, Callable, Dict
 from aiogram import BaseMiddleware
-from aiogram.types import TelegramObject, Message
+from aiogram.types import TelegramObject, Message, CallbackQuery
 from .database import async_session
 from .config import config
 
@@ -14,7 +14,9 @@ class AuthMiddleware(BaseMiddleware):
         user = data.get("event_from_user")
         if user and user.id != config.admin_id:
             if isinstance(event, Message):
-                await event.answer("Отказано в доступе. Вы не являетесь администратором бота.")
+                await event.answer("⛔ Отказано в доступе. Вы не являетесь администратором бота.")
+            elif isinstance(event, CallbackQuery):
+                await event.answer("⛔ Отказано в доступе.", show_alert=True)
             return
         return await handler(event, data)
 
